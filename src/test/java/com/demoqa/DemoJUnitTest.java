@@ -1,5 +1,6 @@
 package com.demoqa;
 
+import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -14,7 +15,7 @@ public class DemoJUnitTest {
   @BeforeAll
   static void beforeAll() {
     System.out.println("#### @BeforeAll");
-//    Configuration.browser = "chrome";
+    Configuration.browser = "chrome";
   }
 
   @AfterAll
