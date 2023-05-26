@@ -1,4 +1,4 @@
-package com.demoqa;
+package com.example;
 
 public class Calculator {
 
