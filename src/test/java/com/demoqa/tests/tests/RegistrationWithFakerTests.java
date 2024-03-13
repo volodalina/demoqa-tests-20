@@ -1,27 +1,31 @@
-package com.demoqa.tests;
+package com.demoqa.tests.tests;
 
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.conditions.Text;
-import org.junit.jupiter.api.BeforeAll;
+
+import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Browsers.CHROME;
-import static com.codeborne.selenide.Browsers.FIREFOX;
+import java.util.Locale;
+
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
+import static com.demoqa.tests.utils.RandomUtils.getRandomEmail;
 
-public class FormTests extends TestBase{
-
+public class RegistrationWithFakerTests extends TestBase{
     @Test
-    void successTest() {
+    void successfulRegistrationTest(){
+        Faker faker = new Faker(new Locale("ru"));
+        String firstName = faker.name().firstName(),
+                lastName = faker.name().lastName(),
+                userEmail = getRandomEmail(10),
+                currentAddress = faker.address().fullAddress();
+
         open("/automation-practice-form");
 
-        $("#firstName").setValue("Alex");
-        $("#lastName").setValue("Surkov");
-        $("#userEmail").setValue("alex@mail.com");
+        $("#firstName").setValue(firstName);
+        $("#lastName").setValue(lastName);
+        $("#userEmail").setValue(userEmail);
         $("#genterWrapper").$(byText("Male")).click();
         $("#userNumber").setValue("0123456789");
         $("#dateOfBirthInput").click();
@@ -32,7 +36,7 @@ public class FormTests extends TestBase{
         $("#subjectsInput").setValue("Math").pressEnter();
         $("#hobbiesWrapper").$(byText("Music")).click();
         $("#uploadPicture").uploadFromClasspath("img/1.png");
-        $("#currentAddress").setValue("Address city");
+        $("#currentAddress").setValue(currentAddress);
         $("#state").click();
         $("#stateCity-wrapper").$(byText("NCR")).click();
         $("#city").click();
@@ -41,6 +45,6 @@ public class FormTests extends TestBase{
 
         $(".modal-dialog").should(appear);
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-        $(".table-responsive").shouldHave(text("Alex"), text("Surkov"), text("0123456789"));
+        $(".table-responsive").shouldHave(text(firstName), text(lastName), text("0123456789"));
     }
 }
