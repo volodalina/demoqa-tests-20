@@ -1,40 +1,34 @@
 package com.demoqa.tests;
 
 import com.codeborne.selenide.Configuration;
+import com.demoqa.tests.pages.TextboxPage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Browsers.FIREFOX;
+import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-public class TextboxTests {
+public class TextboxTests extends TestBase{
 
-    @BeforeAll
-    static void beforeAll() {
-        Configuration.baseUrl = "https://demoqa.com";
-        Configuration.browserSize = "1920x1080";
-//        Configuration.browser = FIREFOX;
-//        Configuration.browserVersion = "100.0";
-//        Configuration.holdBrowserOpen = true;
-    }
+    TextboxPage textboxPage = new TextboxPage();
 
     @Test
     void successTest() {
-        open("/text-box");
+        textboxPage.openPage()
+                .setUserName("Alex Egorov")
+                .setUserEmail("alex@egorov.com")
+                .setCurrentAddress("Some address 1")
+                .setPermanentAddress("Another address 1")
+                .submit();
 
-        $("#userName").setValue("Alex Egorov");
-        $("#userEmail").setValue("alex@egorov.com");
-        $("#currentAddress").setValue("Some address 1");
-        $("#permanentAddress").setValue("Another address 1");
-        $("#submit").click();
-
-        $("#output #name").shouldHave(text("Alex Egorov"));
-        $("#output #email").shouldHave(text("alex@egorov.com"));
-        $("#output #currentAddress").shouldHave(text("Some address 1"));
-        $("#output #permanentAddress").shouldHave(text("Another address 1"));
+        textboxPage.verifyResult("Alex Egorov",
+                "alex@egorov.com",
+                "Some address 1",
+                "Another address 1"
+                );
     }
-
-
 }
